@@ -9,7 +9,7 @@ export default function useFetchCities(query) {
     const fetchCities = async () => {
       try {
         const response = await fetch(
-          `http://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
+          `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${apiKey}`
         );
         const cities = await response.json();
         console.log(cities);
