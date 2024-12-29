@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  
+  padding: 0px;
+  margin: 0px;
+  font-family: segoe ui;
+}
+
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+.animate-zoom {
+  animation: zoom 20s infinite alternate ease-in-out;
+}
