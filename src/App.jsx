@@ -27,7 +27,7 @@ function App() {
 
   return (
     <>
-      <div className=' bg-slate-400 w-full h-lvh flex justify-center items-center' >
+      <div className=' bg-slate-400 w-full h-dvh flex justify-center items-center' >
        {/* <video autoPlay muted loop src='./video1.mp4' height="100%" width="100%">
        </video> */}
 
