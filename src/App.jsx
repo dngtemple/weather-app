@@ -78,7 +78,7 @@ function App() {
             loadingg?(
               <span class="loading loading-dots loading-lg"></span>
             ):
-            <h1 className='text-5xl'>{city}</h1>
+            <h1 className='text-2xl sm:text-3xl md:text-4xl'>{city}</h1>
             
           }
           <h3 className='text-3xl'>{dataa?.main?.temp}°C</h3>
