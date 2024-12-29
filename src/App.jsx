@@ -33,9 +33,9 @@ function App() {
 
        <img src='./picture1.jpg' className='w-full h-full animate-zoom'/>
 
-       <div className='bg-transparent flex flex-col justify-between h-4/5 z-10 absolute w-3/5'>
+       <div className='bg-transparent flex flex-col justify-between h-4/5 z-10 absolute sm:w-3/5 w-4/5'>
          <div className='bg-transparent w-full h-44 flex flex-col justify-center items-center'>
-         <label class="input input-sm input-bordered flex items-center gap-1 w-full sm:w-3/5">
+         <label class="input input-sm input-bordered flex items-center gap-1 w-full sm:w-4/5 md:w-3/5">
           <input onChange={(e)=>{
             setinput(e.target.value);
           }}  type="text" class="grow" placeholder="Search city or country" />
@@ -82,7 +82,7 @@ function App() {
             
           }
           <h3 className='text-3xl'>{dataa?.main?.temp}°C</h3>
-          <h3 className="text-2xl sm:text-5xl">
+          <h3 className="text-xl sm:text-3xl">
           {dataa?.weather && dataa.weather.length > 0 ? dataa.weather[0]?.description : "No weather data"}
         </h3>
 
@@ -100,9 +100,9 @@ function App() {
               <span class="loading loading-ring loading-lg"></span>
             ):
             <div className='w-32 h-4/5 flex text-white flex-col items-center justify-center  rounded'>
-            <MdAutoGraph className='text-6xl'/> 
+            <MdAutoGraph className=' text-3xl sm:text-6xl'/> 
             <h4>{dataa?.main?.feels_like}°C</h4>
-            <p>Feels like</p>
+            <p className=' text-sm sm:text-2xl'>Feels like</p>
            </div>
           }
 
@@ -111,9 +111,9 @@ function App() {
               <span class="loading loading-ring loading-lg"></span>
             ):
             <div className='w-32 h-4/5 text-white flex flex-col items-center justify-center rounded'>
-           <WiHumidity className='text-6xl'/> 
+           <WiHumidity className=' text-3xl sm:text-6xl'/> 
            <h4>{dataa?.main?.humidity}%</h4>
-           <p>Humidity</p>
+           <p className=' text-sm sm:text-2xl'>Humidity</p>
           </div>
           }
 
@@ -122,9 +122,9 @@ function App() {
               <span class="loading loading-ring loading-lg"></span>
             ):
             <div className='w-32 h-4/5 text-white flex flex-col items-center justify-center rounded'>
-           <MdWindPower className='text-6xl'/> 
+           <MdWindPower className=' text-3xl sm:text-6xl'/> 
            <h4>{dataa?.wind?.speed}km/h</h4>
-           <p>Wind</p>
+           <p className=' text-sm sm:text-2xl'>Wind</p>
           </div>
             
           }
