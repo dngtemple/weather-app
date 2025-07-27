@@ -1,144 +1,132 @@
-import { useRef, useState } from 'react'
-import { Route,Router,Routes } from 'react-router-dom'
-import './App.css'
+import { useState } from "react";
+import { MdDeviceThermostat, MdOutlineExplore } from "react-icons/md";
+import { WiHumidity, WiStrongWind } from "react-icons/wi";
+import { FaCloudSun } from "react-icons/fa";
 
-import { MdAutoGraph } from "react-icons/md";
-import { WiHumidity } from "react-icons/wi";
-import { MdWindPower } from "react-icons/md";
+import useFetchCities from "./hooks/useFetchCities.js";
+import useWeather from "./hooks/useWeather.js";
 
+export default function App() {
+  const [input, setInput] = useState("");
+  const [city, setCity] = useState("");
 
-import useFetchCities from "./hooks/useFetchCities.js"
-import useWeather from './hooks/useWeather.js';
-
-function App() {
-
-
-  let [input,setinput]=useState("");
-  let [city,setcity]=useState("")
-
-
-  const {data,loading}=useFetchCities(input)
-  const {dataa,loadingg}=useWeather(city)
-
-  console.log(dataa,loadingg);
-
-
-  
+  const { data, loading } = useFetchCities(input);
+  const { dataa, loadingg } = useWeather(city);
 
   return (
-    <>
-      <div className=' bg-slate-400 w-full h-dvh flex justify-center items-center' >
-       {/* <video autoPlay muted loop src='./video1.mp4' height="100%" width="100%">
-       </video> */}
+    <div className="relative w-full h-dvh overflow-hidden bg-gray-900 text-white">
+      {/* Background Video or Image */}
+      <video
+        autoPlay
+        muted
+        loop
+        className="absolute inset-0 w-full h-full object-cover brightness-75"
+      >
+        <source src="./video1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
 
-       <img src='./picture1.jpg' className='w-full h-full animate-zoom'/>
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-40 backdrop-blur-sm"></div>
 
-       <div className='bg-transparent flex flex-col justify-between h-4/5 z-10 absolute sm:w-3/5 w-4/5'>
-         <div className='bg-transparent w-full h-44 flex flex-col justify-center items-center'>
-         <label class="input input-sm input-bordered flex items-center gap-1 w-full sm:w-4/5 md:w-3/5">
-          <input onChange={(e)=>{
-            setinput(e.target.value);
-          }}  type="text" class="grow" placeholder="Search city or country" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            class="h-4 w-4 opacity-70 text-black">
-            <path
-              fill-rule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clip-rule="evenodd" />
-          </svg>
-         </label>
+      {/* Main Content */}
+      <div className="relative z-10 w-full h-full flex flex-col justify-center items-center px-4 sm:px-10">
+        {/* Search Section */}
+        <div className="w-full max-w-xl mb-8">
+          <label className="input input-lg input-bordered flex items-center gap-2 w-full bg-white text-black">
+            <input
+              type="text"
+              placeholder="Search city or country"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              className="grow outline-none"
+            />
+            <MdOutlineExplore className="text-xl" />
+          </label>
 
-         {input !== "" && (
-              <ul className="menu menu-xs bg-base-200 rounded-box w-full sm:w-3/5">
-                {loading ? (
-                  <li>Loading...</li>
-                ) : data.length > 0 ? (
-                  data.map((city, index) => (
-                    <li onClick={function(){
-                      setcity(city.name)
-                    }} key={index}>
-                      <a>{city.name} {city.state} , {city.country}</a>
-                    </li>
-                  ))
-                ) : (
-                  <li>No results found</li>
-                )}
-              </ul>
-            )}
-        
-         </div>
+          {input !== "" && (
+            <ul className="mt-2 bg-white text-black rounded shadow">
+              {loading ? (
+                <li className="p-2">Loading...</li>
+              ) : data.length > 0 ? (
+                data.map((city, index) => (
+                  <li
+                    key={index}
+                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                    onClick={() => setCity(city.name)}
+                  >
+                    {city.name}, {city.state} {city.country && `- ${city.country}`}
+                  </li>
+                ))
+              ) : (
+                <li className="p-2">No results found</li>
+              )}
+            </ul>
+          )}
+        </div>
 
+        {/* Weather Info */}
+        <div className="text-center mb-10">
+          {loadingg ? (
+            <span className="loading loading-bars loading-lg text-white"></span>
+          ) : (
+            <>
+              <h1 className="text-4xl font-bold">{city}</h1>
+              <h2 className="text-6xl mt-2 font-light">{dataa?.main?.temp}°C</h2>
+              <p className="text-xl mt-1 capitalize text-gray-200">
+                {dataa?.weather?.[0]?.description || "No weather data"}
+              </p>
+            </>
+          )}
+        </div>
 
-         <div className='w-full h-20 flex text-white flex-col items-center justify-center'>
+        {/* Weather Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl">
+          {/* Feels Like */}
+          <WeatherCard
+            icon={<MdDeviceThermostat className="text-4xl" />}
+            title="Feels Like"
+            value={`${dataa?.main?.feels_like}°C`}
+            loading={loadingg}
+          />
 
-          {
-            loadingg?(
-              <span class="loading loading-dots loading-lg"></span>
-            ):
-            <h1 className='text-2xl sm:text-3xl md:text-4xl'>{city}</h1>
-            
-          }
-          <h3 className='text-3xl'>{dataa?.main?.temp}°C</h3>
-          <h3 className="text-xl sm:text-3xl">
-          {dataa?.weather && dataa.weather.length > 0 ? dataa.weather[0]?.description : "No weather data"}
-        </h3>
+          {/* Humidity */}
+          <WeatherCard
+            icon={<WiHumidity className="text-5xl" />}
+            title="Humidity"
+            value={`${dataa?.main?.humidity}%`}
+            loading={loadingg}
+          />
 
+          {/* Wind Speed */}
+          <WeatherCard
+            icon={<WiStrongWind className="text-5xl" />}
+            title="Wind"
+            value={`${dataa?.wind?.speed} km/h`}
+            loading={loadingg}
+          />
+        </div>
 
-         </div>
-
-
-
-
-         <div className='w-full h-40  flex justify-between sm:justify-around'>
-
-
-          {
-            loadingg?(
-              <span class="loading loading-ring loading-lg"></span>
-            ):
-            <div className='w-32 h-4/5 flex text-white flex-col items-center justify-center  rounded'>
-            <MdAutoGraph className=' text-3xl sm:text-6xl'/> 
-            <h4>{dataa?.main?.feels_like}°C</h4>
-            <p className=' text-sm sm:text-2xl'>Feels like</p>
-           </div>
-          }
-
-          {
-            loadingg?(
-              <span class="loading loading-ring loading-lg"></span>
-            ):
-            <div className='w-32 h-4/5 text-white flex flex-col items-center justify-center rounded'>
-           <WiHumidity className=' text-3xl sm:text-6xl'/> 
-           <h4>{dataa?.main?.humidity}%</h4>
-           <p className=' text-sm sm:text-2xl'>Humidity</p>
-          </div>
-          }
-
-          {
-            loadingg?(
-              <span class="loading loading-ring loading-lg"></span>
-            ):
-            <div className='w-32 h-4/5 text-white flex flex-col items-center justify-center rounded'>
-           <MdWindPower className=' text-3xl sm:text-6xl'/> 
-           <h4>{dataa?.wind?.speed}km/h</h4>
-           <p className=' text-sm sm:text-2xl'>Wind</p>
-          </div>
-            
-          }
-
-         </div>
-
-        
-
-         
-       </div>
-
+        <footer className="mt-10 text-gray-400 text-sm">
+          Powered by OpenWeatherMap • Designed by Temple 
+        </footer>
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+function WeatherCard({ icon, title, value, loading }) {
+  return (
+    <div className="bg-white bg-opacity-10 backdrop-blur-md p-6 rounded-2xl flex flex-col items-center justify-center text-center border border-white/20">
+      {loading ? (
+        <span className="loading loading-ring loading-lg text-white"></span>
+      ) : (
+        <>
+          {icon}
+          <h4 className="text-2xl mt-2 font-semibold">{value}</h4>
+          <p className="text-md text-gray-300 mt-1">{title}</p>
+        </>
+      )}
+    </div>
+  );
+}
